@@ -1,0 +1,55 @@
+在模型训练或预测时，我们常常会同时处理多个数据样本并用到矢量计算。在介绍线性回归的矢量计算表达式之前，让我们先考虑对两个向量相加的两种方法。
+
+下面先定义两个1000维的向量。
+
+import torch
+from time import time
+# init variable a,b as 1000 dimension vector
+a = torch.ones(1000)
+b = torch.ones(1000)
+
+
+
+#define a timer class to record time
+class Time(object):
+"""record multiple running times."""
+def __init__(self):
+    self.times = []
+    self.start()
+    
+def start(self):
+   # start the timer
+   self.start_time = time.time()
+def stop(self):
+  #stop the timer and record time into a list
+  self.times.append(time.time() - self.start-time)
+  return self.times[-1]
+def avg(self):
+   #calculate the average and return
+   return sum(self.times)/len(self.times)
+def sum(self):
+   #return the sum of recorded time
+   return sum(self.times)
+
+
+
+向量相加的一种方法是，将这两个向量按元素逐一做标量加法。
+
+start = time()
+c = torch.zeros(1000)
+for i in range(1000):
+    c[i] = a[i] + b[i]
+print(time() - start)
+
+输出：
+0.02039504051208496
+
+向量相加的另一种方法是，将这两个向量直接做矢量加法。
+start = time()
+d = a + b
+print(time() - start)
+Copy to clipboardErrorCopied
+输出：
+0.0008330345153808594
+Copy to clipboardErrorCopied
+结果很明显，后者比前者更省时。因此，我们应该尽可能采用矢量计算，以提升计算效率。
